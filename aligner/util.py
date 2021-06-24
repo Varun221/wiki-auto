@@ -53,20 +53,30 @@ def read_tsv_file(path):
 
 
 def read_aligned_paragraph_data(path, task1_or_task2, simple_to_complex_or_reverse):
-    paragraph_alignments = load_pickle_file(path)
+    df = pd.DataFrame(read_tsv_file(path))
     lsents = []
     rsents = []
     labels = []
     golden_sequences = []
 
-    for paragraph_alignment in paragraph_alignments:
-        lsents.append(paragraph_alignment['simple_side_sents'])
-        rsents.append(paragraph_alignment['complex_side_sents'])
-        if task1_or_task2 == 'task1':
-            labels.append(paragraph_alignment['alignment_in_new_format'] + \
-                          paragraph_alignment['partial_alignment_in_new_format'])
-        else:
-            labels.append(paragraph_alignment['alignment_in_new_format'])
+    for i in range(len(df)):
+      lsents.append(df.loc[i, 3])
+      rsents.append(df.loc[i, 4])
+      
+      if task1_or_task2 == 'task1':
+            labels.append(df.loc[i, 1] + \ + df.loc[i, 2])
+      else:
+          labels.append(df.loc[i, 1])
+    
+    
+#     for paragraph_alignment in paragraph_alignments:
+#         lsents.append(paragraph_alignment['simple_side_sents'])
+#         rsents.append(paragraph_alignment['complex_side_sents'])
+#         if task1_or_task2 == 'task1':
+#             labels.append(paragraph_alignment['alignment_in_new_format'] + \
+#                           paragraph_alignment['partial_alignment_in_new_format'])
+#         else:
+#             labels.append(paragraph_alignment['alignment_in_new_format'])
 
     if simple_to_complex_or_reverse == "simple_to_complex":
 
